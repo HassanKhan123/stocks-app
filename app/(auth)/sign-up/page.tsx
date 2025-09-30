@@ -9,13 +9,13 @@ import {
   RISK_TOLERANCE_OPTIONS,
 } from "@/lib/constants";
 
-// import { signUpWithEmail } from "@/lib/actions/auth.actions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import InputField from "@/components/forms/InputField";
 import { CountrySelectField } from "@/components/forms/CountrySelectField";
 import SelectField from "@/components/forms/SelectField";
 import FooterLink from "@/components/forms/FooterLink";
+import { signUpWithEmail } from "@/lib/actions/auth.actions";
 
 const SignUp = () => {
   const router = useRouter();
@@ -39,8 +39,13 @@ const SignUp = () => {
 
   const onSubmit = async (data: SignUpFormData) => {
     try {
-      //   const result = await signUpWithEmail(data);
-      //   if (result.success) router.push("/");
+      const result = await signUpWithEmail(data);
+      if (result.success) router.push("/");
+      else {
+        toast.error("Sign up failed", {
+          description: "Failed to create an account.",
+        });
+      }
     } catch (e) {
       console.error(e);
       toast.error("Sign up failed", {
